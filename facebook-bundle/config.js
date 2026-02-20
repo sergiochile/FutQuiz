@@ -12,9 +12,9 @@
  */
 
 (function() {
-    const IS_PRODUCTION = false; // <-- Cambiar a true antes de subir a Facebook
+    const IS_PRODUCTION = true; // <-- Cambiar a true antes de subir a Facebook
 
-    const PRODUCTION_API_URL = 'https://TU-BACKEND.railway.app/api'; // <-- Tu URL de Railway aquí
+    const PRODUCTION_API_URL = 'https://web-production-fbb7a.up.railway.app/api'; // <-- Tu URL de Railway aquí
     const LOCAL_API_URL      = window.location.protocol === 'file:'
         ? 'http://127.0.0.1:8000/api'
         : '/api';
@@ -25,6 +25,6 @@
         version:       '1.0.0',
         gameName:      'El Crack Quiz',
         // Facebook App ID (obtenlo en developers.facebook.com)
-        fbAppId:       '',
+        fbAppId:       '757919567386850',
     };
 })();
