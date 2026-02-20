@@ -2854,12 +2854,15 @@ async function initFacebookSDK() {
         const fbEmail = `fb_${fbPlayerId}@facebook.player`;
         const fbPass  = `fbpwd_${fbPlayerId}`;
 
+        FBInstant.setLoadingProgress(50);
+
         let ok = await tryFbLogin(fbEmail, fbPass);
         if (!ok) ok = await tryFbRegister(fbName, fbEmail, fbPass);
 
         if (ok && fbPhoto) {
             document.querySelectorAll('.user-avatar').forEach(el => { el.src = fbPhoto; });
         }
+        FBInstant.setLoadingProgress(100);
         await FBInstant.startGameAsync();
         return true;
     } catch (err) {
