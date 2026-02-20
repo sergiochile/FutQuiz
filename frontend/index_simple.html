@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ El Crack Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1ABC9C;
+            --secondary: #F1C40F;
+            --success: #27AE60;
+            --danger: #E74C3C;
+            --dark: #0F1419;
+            --darker: #0A0D11;
+            --light: #ECF0F1;
+            --text: #2C3E50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* ════════════════════════════════════════ */
+        /* PANTALLA DE LOGIN/REGISTRO SIMPLE */
+        /* ════════════════════════════════════════ */
+
+        #authScreen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 0.5s;
+        }
+
+        #authScreen.hidden {
+            display: none;
+        }
+
+        .auth-box {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h1 {
+            font-size: 3em;
+            margin-bottom: 5px;
+        }
+
+        .auth-header p {
+            color: #95A5A6;
+            font-size: 1em;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: #ECF0F1;
+            border-radius: 12px;
+            padding: 5px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: #95A5A6;
+            transition: all 0.3s;
+            border-radius: 10px;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #DDD;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #16A085 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 188, 156, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .error-msg {
+            background: #FADBD8;
+            color: var(--danger);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            animation: slideIn 0.3s;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        /* ════════════════════════════════════════ */
+        /* PANTALLA PRINCIPAL DE JUEGO */
+        /* ════════════════════════════════════════ */
+
+        #gameScreen {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #gameScreen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-container {
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.4s;
+        }
+
+        .logo-game {
+            font-size: 1.5em;
+            font-weight: 800;
+            color: white;
+        }
+
+        .score-display {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.95em;
+        }
+
+        .user-logout {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+
+        .user-logout:hover {
+            background: #C0392B;
+            transform: scale(1.05);
+        }
+
+        /* MENU PRINCIPAL */
+        .main-menu {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .menu-title {
+            font-size: 2.5em;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .menu-subtitle {
+            color: #BDC3C7;
+            margin-bottom: 40px;
+            font-size: 1em;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            background: linear-gradient(135deg, white 0%, #ECF0F1 100%);
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: var(--text);
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-btn:active {
+            transform: translateY(-2px);
+        }
+
+        /* PANTALLA DE QUIZ */
+        .quiz-container {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: fadeIn 0.4s;
+        }
+
+        .quiz-container.active {
+            display: flex;
+        }
+
+        .question-box {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #95A5A6;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: #DDD;
+            border-radius: 2px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #F0F0F0;
+            border: 2px solid #DDD;
+            padding: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: var(--text);
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #F8FFFE;
+            transform: translateX(5px);
+        }
+
+        .option-btn:active {
+            transform: translateX(0);
+        }
+
+        .option-btn.correct {
+            background: #D5F4E6;
+            border-color: var(--success);
+            color: #27AE60;
+        }
+
+        .option-btn.incorrect {
+            background: #FADBD8;
+            border-color: var(--danger);
+            color: #C0392B;
+        }
+
+        /* RESULTADO */
+        .result-box {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: slideIn 0.4s;
+        }
+
+        .result-box.show {
+            display: block;
+        }
+
+        .result-emoji {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .result-text {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .result-points {
+            font-size: 1.1em;
+            color: #95A5A6;
+        }
+
+        /* BOTONES DE JUEGO */
+        .game-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-small {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--primary) 0%, #16A085 100%);
+            color: white;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 188, 156, 0.3);
+        }
+
+        .btn-menu {
+            background: #95A5A6;
+            color: white;
+        }
+
+        .btn-menu:hover {
+            background: #7F8C8D;
+        }
+
+        /* PANTALLA DE EQUIPO */
+        .team-container {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            animation: fadeIn 0.4s;
+        }
+
+        .team-container.active {
+            display: flex;
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .team-header h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .team-header p {
+            color: #BDC3C7;
+            font-size: 0.9em;
+        }
+
+        .field {
+            background: linear-gradient(180deg, #2D5016 0%, #1E3209 100%);
+            border: 3px solid #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            aspect-ratio: 16 / 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .field-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .player-slot {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.5em;
+        }
+
+        .player-slot:hover {
+            transform: scale(1.1);
+            background: rgba(26, 188, 156, 0.2);
+            border-color: var(--primary);
+        }
+
+        .player-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* CATÁLOGO */
+        .catalog-container {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            animation: fadeIn 0.4s;
+        }
+
+        .catalog-container.active {
+            display: flex;
+        }
+
+        .catalog-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .catalog-header h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .players-simple-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .player-card-simple {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .player-card-simple:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .player-img-simple {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .player-img-simple img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .player-name-simple {
+            padding: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.8em;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-rating-simple {
+            padding: 0 8px 8px;
+            text-align: center;
+            font-size: 0.75em;
+            color: #95A5A6;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .auth-box {
+                padding: 25px;
+            }
+
+            .menu-title {
+                font-size: 2em;
+            }
+
+            .menu-btn {
+                padding: 16px;
+                font-size: 1.1em;
+            }
+
+            .question-box {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+
+            .option-btn {
+                font-size: 0.95em;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PANTALLA DE AUTENTICACIÓN -->
+    <div id="authScreen">
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1>⚽</h1>
+                <h2>El Crack Quiz</h2>
+                <p>Juega y desbloquea jugadores</p>
+            </div>
+
+            <div class="error-msg" id="errorMsg"></div>
+
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchAuthTab('login')">Entrar</button>
+                <button class="tab-btn" onclick="switchAuthTab('register')">Crear Cuenta</button>
+            </div>
+
+            <!-- LOGIN -->
+            <form class="form active" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="tu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+
+            <!-- REGISTRO -->
+            <form class="form" id="registerForm">
+                <div class="form-group">
+                    <label for="regUsername">Usuario</label>
+                    <input type="text" id="regUsername" placeholder="tu_usuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" placeholder="tu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Contraseña</label>
+                    <input type="password" id="regPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PANTALLA DE JUEGO -->
+    <div id="gameScreen">
+        <div class="game-container">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <div class="logo-game">⚽ El Crack</div>
+                <div class="score-display">Puntos: <span id="scoreDisplay">0</span></div>
+                <button class="user-logout" onclick="logout()">Salir</button>
+            </div>
+
+            <!-- MENÚ PRINCIPAL -->
+            <div class="main-menu" id="mainMenu">
+                <div class="menu-title">QuizFut</div>
+                <div class="menu-subtitle">¿Listo para jugar?</div>
+                <div class="menu-buttons">
+                    <button class="menu-btn" onclick="startQuiz()">🎮 Jugar Quiz</button>
+                    <button class="menu-btn" onclick="goToTeam()">⚽ Mi Equipo</button>
+                    <button class="menu-btn" onclick="goToCatalog()">📸 Catálogo</button>
+                </div>
+            </div>
+
+            <!-- PANTALLA DE QUIZ -->
+            <div class="quiz-container" id="quizContainer">
+                <div class="question-box">
+                    <div class="question-progress">
+                        <span id="questionNum">1</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <span id="questionTotal">30</span>
+                    </div>
+                    <div class="result-box" id="resultBox">
+                        <div class="result-emoji" id="resultEmoji">✓</div>
+                        <div class="result-text" id="resultText">¡Correcto!</div>
+                        <div class="result-points" id="resultPoints">+10 puntos</div>
+                    </div>
+                    <div class="question-text" id="questionText">¿Cuál es la pregunta?</div>
+                    <div class="options" id="optionsContainer"></div>
+                </div>
+
+                <div class="game-footer">
+                    <button class="btn-small btn-next" id="nextBtn" onclick="nextQuestion()" style="display:none;">Siguiente</button>
+                    <button class="btn-small btn-menu" onclick="goToMenu()">Menú</button>
+                </div>
+            </div>
+
+            <!-- PANTALLA DE EQUIPO -->
+            <div class="team-container" id="teamContainer">
+                <div class="team-header">
+                    <h2>Mi Equipo</h2>
+                    <p>Formación 4-3-3</p>
+                </div>
+
+                <div class="field">
+                    <!-- Portero -->
+                    <div class="field-row">
+                        <div class="player-slot" onclick="selectPlayer('POR')">⭕</div>
+                    </div>
+                    <!-- Defensas -->
+                    <div class="field-row">
+                        <div class="player-slot" onclick="selectPlayer('DEF1')">⭕</div>
+                        <div class="player-slot" onclick="selectPlayer('DEF2')">⭕</div>
+                        <div class="player-slot" onclick="selectPlayer('DEF3')">⭕</div>
+                        <div class="player-slot" onclick="selectPlayer('DEF4')">⭕</div>
+                    </div>
+                    <!-- Mediocampistas -->
+                    <div class="field-row">
+                        <div class="player-slot" onclick="selectPlayer('MED1')">⭕</div>
+                        <div class="player-slot" onclick="selectPlayer('MED2')">⭕</div>
+                        <div class="player-slot" onclick="selectPlayer('MED3')">⭕</div>
+                    </div>
+                    <!-- Delanteros -->
+                    <div class="field-row">
+                        <div class="player-slot" onclick="selectPlayer('DEL1')">⭕</div>
+                        <div class="player-slot" onclick="selectPlayer('DEL2')">⭕</div>
+                        <div class="player-slot" onclick="selectPlayer('DEL3')">⭕</div>
+                    </div>
+                </div>
+
+                <button class="btn-small btn-menu" onclick="goToMenu()">Menú</button>
+            </div>
+
+            <!-- CATÁLOGO -->
+            <div class="catalog-container" id="catalogContainer">
+                <div class="catalog-header">
+                    <h2>Catálogo</h2>
+                    <p id="catalogStats">Cargando...</p>
+                </div>
+
+                <div class="players-simple-grid" id="playersGrid"></div>
+
+                <button class="btn-small btn-menu" onclick="goToMenu()" style="margin-top: 15px;">Menú</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ════════════════════════════════════════
+        // ESTADO GLOBAL
+        // ════════════════════════════════════════
+
+        let currentUser = null;
+        let authToken = null;
+        let userScore = 0;
+        let allPlayers = [];
+        let currentQuestionIndex = 0;
+        let currentQuestions = [];
+        let selectedAnswers = [];
+
+        const API_URL = 'http://127.0.0.1:8000/api';
+
+        // ════════════════════════════════════════
+        // AUTENTICACIÓN
+        // ════════════════════════════════════════
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+            document.getElementById(tab + 'Form').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const res = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    currentUser = {
+                        id: data.user_id,
+                        username: data.username,
+                        email: data.email
+                    };
+                    authToken = data.auth_token;
+                    localStorage.setItem('authToken', authToken);
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    showGameScreen();
+                } else {
+                    showError(data.message || 'Error al iniciar sesión');
+                }
+            } catch (error) {
+                showError('Error de conexión');
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            try {
+                const res = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    currentUser = {
+                        id: data.user_id,
+                        username: data.username,
+                        email: data.email
+                    };
+                    authToken = data.auth_token;
+                    localStorage.setItem('authToken', authToken);
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    showGameScreen();
+                } else {
+                    showError(data.message || 'Error al registrarse');
+                }
+            } catch (error) {
+                showError('Error de conexión');
+            }
+        });
+
+        function showError(message) {
+            const errorEl = document.getElementById('errorMsg');
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+            setTimeout(() => errorEl.classList.remove('show'), 5000);
+        }
+
+        function showGameScreen() {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.add('active');
+            loadPlayers();
+        }
+
+        function logout() {
+            if (confirm('¿Cerrar sesión?')) {
+                currentUser = null;
+                authToken = null;
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('currentUser');
+
+                document.getElementById('gameScreen').classList.remove('active');
+                document.getElementById('authScreen').classList.remove('hidden');
+                document.getElementById('loginForm').reset();
+                document.getElementById('registerForm').reset();
+            }
+        }
+
+        // ════════════════════════════════════════
+        // NAVEGACIÓN
+        // ════════════════════════════════════════
+
+        function goToMenu() {
+            document.querySelectorAll('.main-menu, .quiz-container, .team-container, .catalog-container').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById('mainMenu').classList.add('active');
+        }
+
+        function startQuiz() {
+            document.getElementById('mainMenu').classList.remove('active');
+            document.getElementById('quizContainer').classList.add('active');
+            currentQuestionIndex = 0;
+            loadQuestionsAndStart();
+        }
+
+        function goToTeam() {
+            document.getElementById('mainMenu').classList.remove('active');
+            document.getElementById('teamContainer').classList.add('active');
+        }
+
+        function goToCatalog() {
+            document.getElementById('mainMenu').classList.remove('active');
+            document.getElementById('catalogContainer').classList.add('active');
+            renderCatalog();
+        }
+
+        // ════════════════════════════════════════
+        // QUIZ
+        // ════════════════════════════════════════
+
+        async function loadQuestionsAndStart() {
+            try {
+                const res = await fetch(`${API_URL}/api/info`);
+                const data = await res.json();
+                
+                // Por ahora, simular preguntas (en prod: obtener del servidor)
+                currentQuestions = generateMockQuestions(30);
+                showQuestion(0);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function generateMockQuestions(count) {
+            const questions = [
+                {
+                    text: "¿Cuántas copas del mundo ganó Brasil?",
+                    options: ["3", "5", "4", "2"],
+                    correct: 1
+                },
+                {
+                    text: "¿En qué año se jugó el primer Mundial?",
+                    options: ["1920", "1930", "1950", "1940"],
+                    correct: 1
+                },
+                {
+                    text: "¿Cuál es el equipo con más Champions League?",
+                    options: ["Barcelona", "Bayern Munich", "Real Madrid", "AC Milan"],
+                    correct: 2
+                }
+            ];
+
+            // Repetir para llegar a 30
+            let result = [];
+            for (let i = 0; i < count; i++) {
+                result.push({...questions[i % questions.length]});
+            }
+            return result;
+        }
+
+        function showQuestion(index) {
+            const q = currentQuestions[index];
+            
+            document.getElementById('questionNum').textContent = index + 1;
+            document.getElementById('questionTotal').textContent = currentQuestions.length;
+            document.getElementById('progressFill').style.width = ((index + 1) / currentQuestions.length * 100) + '%';
+            document.getElementById('questionText').textContent = q.text;
+            
+            const optionsHTML = q.options.map((opt, i) => `
+                <button class="option-btn" onclick="selectAnswer(${i}, ${q.correct})">
+                    ${opt}
+                </button>
+            `).join('');
+            
+            document.getElementById('optionsContainer').innerHTML = optionsHTML;
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('resultBox').classList.remove('show');
+        }
+
+        function selectAnswer(selected, correct) {
+            const buttons = document.querySelectorAll('.option-btn');
+            
+            buttons.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === correct) {
+                    btn.classList.add('correct');
+                }
+                if (i === selected && i !== correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const isCorrect = selected === correct;
+            const points = isCorrect ? 10 : 0;
+            userScore += points;
+
+            document.getElementById('scoreDisplay').textContent = userScore;
+            document.getElementById('resultEmoji').textContent = isCorrect ? '✓' : '✗';
+            document.getElementById('resultText').textContent = isCorrect ? '¡Correcto!' : 'Incorrecta';
+            document.getElementById('resultPoints').textContent = (isCorrect ? '+' : '') + points + ' puntos';
+            document.getElementById('resultBox').classList.add('show');
+
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex >= currentQuestions.length) {
+                alert('¡Juego terminado! Puntuación final: ' + userScore);
+                goToMenu();
+            } else {
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        // ════════════════════════════════════════
+        // JUGADORES
+        // ════════════════════════════════════════
+
+        async function loadPlayers() {
+            try {
+                const res = await fetch(`${API_URL}/players/catalog?username=${currentUser.username}`);
+                const data = await res.json();
+                allPlayers = data.players;
+            } catch (error) {
+                console.error('Error cargando jugadores:', error);
+            }
+        }
+
+        function renderCatalog() {
+            const grid = document.getElementById('playersGrid');
+            grid.innerHTML = '';
+
+            allPlayers.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card-simple';
+                
+                card.innerHTML = `
+                    <div class="player-img-simple" style="background: linear-gradient(135deg, #${Math.floor(Math.random()*16777215).toString(16)} 0%, #${Math.floor(Math.random()*16777215).toString(16)} 100%);">
+                        <img src="${player.photo}" alt="${player.name}" onerror="this.style.display='none'">
+                    </div>
+                    <div class="player-name-simple">${player.name}</div>
+                    <div class="player-rating-simple">${player.rating} ⭐</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+
+            document.getElementById('catalogStats').textContent = `${allPlayers.length} jugadores disponibles`;
+        }
+
+        function selectPlayer(position) {
+            alert('Seleccionar jugador para ' + position);
+        }
+
+        // ════════════════════════════════════════
+        // INICIALIZACIÓN
+        // ════════════════════════════════════════
+
+        window.addEventListener('load', () => {
+            const savedToken = localStorage.getItem('authToken');
+            const savedUser = localStorage.getItem('currentUser');
+
+            if (savedToken && savedUser) {
+                authToken = savedToken;
+                currentUser = JSON.parse(savedUser);
+                showGameScreen();
+            }
+        });
+    </script>
+</body>
+</html>

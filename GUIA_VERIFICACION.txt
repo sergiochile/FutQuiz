@@ -1,0 +1,273 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║               🔐 GUÍA RÁPIDA - SISTEMA DE VERIFICACIÓN                       ║
+║                         EL CRACK QUIZ v1.1                                  ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 1️⃣  INICIO RÁPIDO                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+PASO 1: Inicia los servidores
+   $ bash REPARAR.sh
+
+PASO 2: Abre en el navegador
+   http://127.0.0.1:3000
+
+PASO 3: Ingresa tu nombre de usuario
+   • Cualquier nombre válido (2-20 caracteres)
+
+PASO 4: Haz clic en la pestaña "✅ Verificación"
+   • Ubicada en la navbar superior
+   • Entre "🏆 Ranking" y el botón de "Salir"
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 2️⃣  INTERFAZ DE VERIFICACIÓN                                              ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+La pestaña de verificación contiene:
+
+┌─ TÍTULO ──────────────────────────────────────────────────────────────┐
+│ ✅ Sistema de Verificación                                           │
+└───────────────────────────────────────────────────────────────────────┘
+
+┌─ DESCRIPCIÓN ─────────────────────────────────────────────────────────┐
+│ "El sistema de verificación valida la integridad de tu sesión,       │
+│  usuario, respuestas y detecta patrones de trampa."                  │
+└───────────────────────────────────────────────────────────────────────┘
+
+┌─ BOTONES DE ACCIÓN (2x2 grid) ────────────────────────────────────────┐
+│                                                                       │
+│ ┌─────────────────────────────┬─────────────────────────────┐        │
+│ │ 🔍 Verificar Sesión         │ 👤 Verificar Usuario        │        │
+│ │ (Si tienes juego activo)    │ (Valida tu nombre)          │        │
+│ └─────────────────────────────┴─────────────────────────────┘        │
+│ ┌─────────────────────────────┬─────────────────────────────┐        │
+│ │ ⚙️  Salud del Sistema        │ 📊 Verificar Puntuación    │        │
+│ │ (Estado de componentes)      │ (Valida tu score actual)    │        │
+│ └─────────────────────────────┴─────────────────────────────┘        │
+│                                                                       │
+└───────────────────────────────────────────────────────────────────────┘
+
+┌─ PANEL DE RESULTADOS ─────────────────────────────────────────────────┐
+│ Aparece después de hacer clic en cualquier botón                     │
+│                                                                       │
+│ Muestra:                                                             │
+│  • Estado (✅ PASS / ❌ FAIL)                                        │
+│  • Mensaje descriptivo                                              │
+│  • Detalles específicos (según verificación)                         │
+│  • Indicadores con código de color                                  │
+└───────────────────────────────────────────────────────────────────────┘
+
+┌─ HISTÓRICO DE VERIFICACIONES ─────────────────────────────────────────┐
+│ Últimas 20 verificaciones realizadas                                 │
+│                                                                       │
+│ Para cada verificación muestra:                                      │
+│  • Nombre del test                                                  │
+│  • Resultado (PASS/FAIL/ERROR)                                      │
+│  • Hora exacta (HH:MM:SS)                                           │
+└───────────────────────────────────────────────────────────────────────┘
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 3️⃣  OPCIONES DISPONIBLES                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+🔍 VERIFICAR SESIÓN
+   ├─ Requiere: Partida activa
+   ├─ Valida: Que tu sesión sea válida y no haya expirado
+   ├─ Comprueba: Hash SHA256 de la sesión
+   └─ Resultado: ✅ Sesión válida | ❌ Sesión expirada/no encontrada
+   
+   Caso de uso: Verificar que tu juego actual es seguro y válido
+
+👤 VERIFICAR USUARIO
+   ├─ Requiere: Nombre de usuario ingresado
+   ├─ Valida: Que tu nombre sea válido según las reglas
+   ├─ Comprueba: Longitud (2-20 chars), caracteres permitidos
+   └─ Resultado: ✅ Nombre válido | ❌ Nombre inválido (con razón)
+   
+   Caso de uso: Confirmar que tu nombre de usuario es correcto
+
+⚙️  SALUD DEL SISTEMA
+   ├─ Requiere: Nada (siempre disponible)
+   ├─ Valida: Estado general del sistema de verificación
+   ├─ Comprueba: 4 componentes (session, answer, user, integrity)
+   └─ Resultado: ✅ Sistema operativo | ⚠️ Hay problemas
+   
+   Caso de uso: Diagnóstico rápido si algo está mal
+
+📊 VERIFICAR PUNTUACIÓN
+   ├─ Requiere: Haber jugado (tener un score)
+   ├─ Valida: Que tu puntuación sea coherente
+   ├─ Comprueba: Score vs respuestas correctas/totales
+   └─ Resultado: ✅ Puntuación válida | ❌ Puntuación incoherente
+   
+   Caso de uso: Validar que tu score final es correcto
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 4️⃣  EJEMPLOS DE RESULTADOS                                                ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+EJEMPLO 1: Verificar Sesión (Exitosa)
+┌─────────────────────────────────────────────────────────────┐
+│ ✅ Sesión válida                                            │
+│                                                             │
+│ ID Sesión: TestBot_1771371328                             │
+│ Activa: Sí ✅                                              │
+│ Verificada: Sí ✅                                          │
+│                                                             │
+│ Fondo: Verde claro con borde verde                         │
+└─────────────────────────────────────────────────────────────┘
+
+EJEMPLO 2: Verificar Usuario (Inválido)
+┌─────────────────────────────────────────────────────────────┐
+│ ❌ El nombre debe tener al menos 2 caracteres              │
+│                                                             │
+│ Usuario: X                                                  │
+│ Estado: Inválido ❌                                        │
+│                                                             │
+│ Fondo: Rojo claro con borde rojo                           │
+└─────────────────────────────────────────────────────────────┘
+
+EJEMPLO 3: Salud del Sistema (Todo OK)
+┌─────────────────────────────────────────────────────────────┐
+│ ✅ SISTEMA VERIFICACIÓN OPERATIVO                          │
+│                                                             │
+│ Sistema Verificación: ✅ Activo                            │
+│ Sesiones Activas: 2                                        │
+│ Timeout Sesión: 60 min                                     │
+│                                                             │
+│ Componentes:                                               │
+│   session_verifier: ✅ OK                                  │
+│   answer_verifier: ✅ OK                                   │
+│   user_verifier: ✅ OK                                     │
+│   integrity_verifier: ✅ OK                                │
+│                                                             │
+│ Fondo: Verde claro con borde verde                         │
+└─────────────────────────────────────────────────────────────┘
+
+EJEMPLO 4: Verificar Puntuación (Válida)
+┌─────────────────────────────────────────────────────────────┐
+│ ✅ Puntuación válida                                       │
+│                                                             │
+│ Puntuación: 2,500                                         │
+│ Correctas: 20/30                                          │
+│ Precisión: 66.7%                                          │
+│ Validez: OK ✅                                            │
+│                                                             │
+│ Fondo: Verde claro con borde verde                         │
+└─────────────────────────────────────────────────────────────┘
+
+EJEMPLO 5: Histórico de Verificaciones
+┌─────────────────────────────────────────────────────────────┐
+│ 1. Salud del Sistema          ✅ PASS      19:45:32        │
+│ 2. Verificación de Puntuación ✅ PASS      19:45:28        │
+│ 3. Verificación de Usuario    ✅ PASS      19:45:25        │
+│ 4. Verificación de Sesión     ✅ PASS      19:45:22        │
+│ 5. Salud del Sistema          ✅ PASS      19:45:19        │
+└─────────────────────────────────────────────────────────────┘
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 5️⃣  CÓDIGO DE COLORES                                                     ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+🟢 VERDE (#1ABC9C)
+   Significado: ✅ Exitoso, válido, correcto
+   Usado para: Resultados positivos
+
+🔴 ROJO (#E74C3C)
+   Significado: ❌ Error, inválido, fallido
+   Usado para: Resultados negativos
+
+🟡 AMARILLO (#F1C40F)
+   Significado: ⚠️ Advertencia, requiere atención
+   Usado para: Patrones sospechosos detectados
+
+⚫ GRIS (#95A5A6)
+   Significado: Información secundaria, muted
+   Usado para: Labels, descripciones, tiempos
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 6️⃣  PREGUNTAS FRECUENTES                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+P: ¿Por qué dice "Sesión no encontrada"?
+R: Tu partida actual ha expirado (después de 1 hora inactivo)
+   Solución: Inicia una nueva partida
+
+P: ¿Puedo verificar sin estar en una partida?
+R: Sí, pero algunos tests requieren actividad previa
+   • Verificar Usuario: siempre disponible
+   • Salud del Sistema: siempre disponible
+   • Verificar Sesión: requiere partida activa
+   • Verificar Puntuación: requiere partida completada
+
+P: ¿Qué significa "Patrón sospechoso"?
+R: El sistema detectó un comportamiento no natural
+   • 100% respuestas correctas muy rápido
+   • Tiempos idénticos en todas las preguntas
+   • Velocidad de respuesta imposiblemente rápida
+
+P: ¿Se usa mi información de verificación?
+R: No, se usa solo para diagnóstico
+   • No afecta tu score
+   • No es punitivo
+   • Solo es informativo
+
+P: ¿Con qué frecuencia debo verificar?
+R: Solo cuando lo necesites
+   • Después de una partida importante
+   • Si sospechas de algún problema
+   • Para diagnóstico de sistema
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 7️⃣  ACCESO VÍA API                                                        ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Si prefieres usar la API directamente (cURL, Postman, etc.):
+
+# Ver salud del sistema
+curl http://127.0.0.1:8000/api/verify/system-health
+
+# Verificar usuario específico
+curl http://127.0.0.1:8000/api/verify/user/MiNombre
+
+# Verificar puntuación
+curl -X POST http://127.0.0.1:8000/api/verify/score \
+  -H "Content-Type: application/json" \
+  -d '{"score": 2500, "correct": 20, "total": 30}'
+
+# Documentación interactiva
+http://127.0.0.1:8000/docs  (Swagger UI)
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 8️⃣  SOLUCIÓN DE PROBLEMAS                                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+PROBLEMA: No veo la pestaña "✅ Verificación"
+SOLUCIÓN: Actualiza la página (F5 o Cmd+R)
+
+PROBLEMA: Click en botón pero no pasa nada
+SOLUCIÓN: Espera a que termine la solicitud anterior
+         La UI está procesando, muestra "⏳ Verificando..."
+
+PROBLEMA: Error "No hay sesión activa"
+SOLUCIÓN: Necesitas tener una partida en progreso
+         Inicia una partida en la pestaña "⚽ Quiz"
+
+PROBLEMA: API responde 404
+SOLUCIÓN: Backend no está corriendo
+         Ejecuta: bash REPARAR.sh
+
+PROBLEMA: Histórico muestra ERROR
+SOLUCIÓN: Puede haber problema con la conexión
+         Verifica en "⚙️ Salud del Sistema"
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                    ✅ ¡LISTO PARA VERIFICAR!                                ║
+║                                                                              ║
+║    Accede a http://127.0.0.1:3000 y haz clic en "✅ Verificación"           ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝

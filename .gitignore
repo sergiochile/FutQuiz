@@ -1,0 +1,40 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Entorno
+.env
+*.env.local
+
+# Base de datos local
+*.db
+*.sqlite3
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backups y archivos temporales
+*.bak
+frontend/index.html.bak
+frontend/index_backup_*.html
+frontend/index_complejo.html
+frontend/index_modernizado.html
+frontend/index_new.html
+
+# Bundle (se regenera con el script)
+facebook-bundle.zip
