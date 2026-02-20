@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Facebook Instant Games SDK (requerido para Facebook Games) -->
-    <script src="https://connect.facebook.net/en_US/fbinstant.6.3.js"></script>
+    <script src="https://connect.facebook.net/en_US/fbinstant.latest.js"></script>
     <!-- Configuración de la app (API URL, Facebook App ID) -->
     <script src="config.js"></script>
         <style>
@@ -2846,23 +2846,34 @@ const RARITY_COLORS = {
 async function initFacebookSDK() {
     if (typeof FBInstant === 'undefined') return false;
     try {
-        await FBInstant.initializeAsync();
-        const fbPlayerId = FBInstant.player.getID();
-        const fbName     = FBInstant.player.getName() || 'Jugador';
-        const fbPhoto    = FBInstant.player.getPhoto();
+        // Timeout de 10s para initializeAsync por si la plataforma no responde
+        const initTimeout = new Promise(resolve => setTimeout(resolve, 10000));
+        await Promise.race([FBInstant.initializeAsync(), initTimeout]);
 
-        const fbEmail = `fb_${fbPlayerId}@facebook.player`;
-        const fbPass  = `fbpwd_${fbPlayerId}`;
+        let fbPlayerId, fbName, fbPhoto;
+        try {
+            fbPlayerId = FBInstant.player.getID();
+            fbName     = FBInstant.player.getName() || 'Jugador';
+            fbPhoto    = FBInstant.player.getPhoto();
+        } catch (_) { fbName = 'Jugador'; }
 
-        FBInstant.setLoadingProgress(50);
-
-        let ok = await tryFbLogin(fbEmail, fbPass);
-        if (!ok) ok = await tryFbRegister(fbName, fbEmail, fbPass);
-
-        if (ok && fbPhoto) {
-            document.querySelectorAll('.user-avatar').forEach(el => { el.src = fbPhoto; });
+        if (typeof FBInstant.setLoadingProgress === 'function') {
+            FBInstant.setLoadingProgress(40);
         }
-        FBInstant.setLoadingProgress(100);
+
+        if (fbPlayerId) {
+            const fbEmail = `fb_${fbPlayerId}@facebook.player`;
+            const fbPass  = `fbpwd_${fbPlayerId}`;
+            let ok = await tryFbLogin(fbEmail, fbPass);
+            if (!ok) ok = await tryFbRegister(fbName || 'Jugador', fbEmail, fbPass);
+            if (ok && fbPhoto) {
+                document.querySelectorAll('.user-avatar').forEach(el => { el.src = fbPhoto; });
+            }
+        }
+
+        if (typeof FBInstant.setLoadingProgress === 'function') {
+            FBInstant.setLoadingProgress(100);
+        }
         await FBInstant.startGameAsync();
         return true;
     } catch (err) {
