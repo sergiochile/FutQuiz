@@ -48,24 +48,19 @@ ALLOWED_ORIGINS = os.getenv(
     "http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000,null"
 ).split(",")
 
-# En producción incluir dominios de Facebook
-FACEBOOK_ORIGINS = [
-    "https://fb.gg",
-    "https://apps.facebook.com",
-    "https://www.facebook.com",
-]
-if os.getenv("ENVIRONMENT") == "production":
-    ALLOWED_ORIGINS = list(set(ALLOWED_ORIGINS + FACEBOOK_ORIGINS))
+# En producción usar wildcard para cubrir todos los dominios de Facebook CDN
+# (auth usa tokens en body, no cookies, por lo que credentials=False es seguro)
+IS_PRODUCTION = os.getenv("ENVIRONMENT") == "production"
 
 app = FastAPI(title="El Crack Quiz API", version="0.2.0")
 engine = QuizEngine()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
+    allow_origins=["*"] if IS_PRODUCTION else ALLOWED_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
 )
 
 # Inicializar DB al arrancar
