@@ -1652,8 +1652,8 @@
         <!-- LOGIN -->
         <form class="form active" id="loginForm">
             <div class="form-group">
-                <label for="loginEmail" data-i18n="auth_label_email">Email</label>
-                <input type="email" id="loginEmail" data-i18n-ph="auth_ph_email" placeholder="tu@email.com" required>
+                <label for="loginUsername" data-i18n="auth_label_username">Usuario</label>
+                <input type="text" id="loginUsername" data-i18n-ph="auth_ph_username" placeholder="tu_usuario" required>
             </div>
             <div class="form-group">
                 <label for="loginPassword" data-i18n="auth_label_password">Contraseña</label>
@@ -1668,12 +1668,8 @@
                 <input type="text" id="regUsername" data-i18n-ph="auth_ph_username" placeholder="tu_usuario" minlength="3" maxlength="20" required>
             </div>
             <div class="form-group">
-                <label for="regEmail" data-i18n="auth_label_email">Email</label>
-                <input type="email" id="regEmail" data-i18n-ph="auth_ph_email" placeholder="tu@email.com" required>
-            </div>
-            <div class="form-group">
                 <label for="regPassword" data-i18n="auth_label_password">Contraseña</label>
-                <input type="password" id="regPassword" data-i18n-ph="auth_ph_password" placeholder="••••••••" minlength="8" required>
+                <input type="password" id="regPassword" data-i18n-ph="auth_ph_password" placeholder="••••••" minlength="4" required>
             </div>
             <button type="submit" class="btn btn-primary" data-i18n="auth_btn_register">Crear Cuenta</button>
         </form>
@@ -2868,11 +2864,11 @@ async function initFacebookSDK() {
     }
 }
 
-async function tryFbLogin(email, password) {
+async function tryFbLogin(username, password) {
     try {
         const res = await fetch(`${API_URL}/auth/login`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ username, password })
         });
         const data = await res.json();
         if (data.success) { applyLogin(data); return true; }
@@ -2880,11 +2876,11 @@ async function tryFbLogin(email, password) {
     return false;
 }
 
-async function tryFbRegister(username, email, password) {
+async function tryFbRegister(username, password) {
     try {
         const res = await fetch(`${API_URL}/auth/register`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, email, password })
+            body: JSON.stringify({ username, password })
         });
         const data = await res.json();
         if (data.success) { applyLogin(data); return true; }
@@ -2913,13 +2909,13 @@ function switchAuthTab(tab, btn) {
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email    = document.getElementById('loginEmail').value;
+    const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
     showLoading(T('loading_login'));
     try {
         const res  = await fetch(`${API_URL}/auth/login`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ username, password })
         });
         const data = await res.json();
         hideLoading();
@@ -2931,13 +2927,12 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const username = document.getElementById('regUsername').value;
-    const email    = document.getElementById('regEmail').value;
     const password = document.getElementById('regPassword').value;
     showLoading(T('loading_register'));
     try {
         const res  = await fetch(`${API_URL}/auth/register`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, email, password })
+            body: JSON.stringify({ username, password })
         });
         const data = await res.json();
         hideLoading();

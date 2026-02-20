@@ -81,11 +81,10 @@ def health_check():
 # AUTENTICACIÓN
 class RegisterRequest(BaseModel):
     username: str
-    email: str
     password: str
 
 class LoginRequest(BaseModel):
-    email: str
+    username: str
     password: str
 
 class AuthResponse(BaseModel):
@@ -208,31 +207,31 @@ def register(req: RegisterRequest):
     try:
         # Validaciones básicas
         if len(req.username) < 3 or len(req.username) > 20:
-            return AuthResponse(success=False, message="Username debe tener 3-20 caracteres")
+            return AuthResponse(success=False, message="Usuario debe tener 3-20 caracteres")
 
-        if len(req.password) < 8:
-            return AuthResponse(success=False, message="Contraseña debe tener mínimo 8 caracteres")
+        if len(req.password) < 4:
+            return AuthResponse(success=False, message="Contraseña debe tener mínimo 4 caracteres")
 
-        if "@" not in req.email:
-            return AuthResponse(success=False, message="Email inválido")
+        # Generar email interno automáticamente
+        internal_email = f"{req.username.lower()}@futquiz.internal"
 
-        # Verificar que el usuario o email no existan ya
+        # Verificar que el usuario no exista ya
         import sqlite3 as _sqlite3
         from backend.database import DB_PATH as _DB_PATH
         _conn = _sqlite3.connect(_DB_PATH)
         _existing = _conn.execute(
-            "SELECT id FROM users WHERE username = ? OR email = ?",
-            (req.username, req.email)
+            "SELECT id FROM users WHERE username = ?",
+            (req.username,)
         ).fetchone()
         _conn.close()
         if _existing:
-            return AuthResponse(success=False, message="Usuario o email ya existe")
+            return AuthResponse(success=False, message="Ese nombre de usuario ya está en uso")
 
         # Hash de contraseña
         password_hash, _ = hash_password(req.password)
 
         # Crear usuario
-        user = get_or_create_user(req.username, req.email, password_hash)
+        user = get_or_create_user(req.username, internal_email, password_hash)
 
         if user is None:
             return AuthResponse(success=False, message="Error al crear el usuario")
@@ -261,23 +260,23 @@ def register(req: RegisterRequest):
 def login(req: LoginRequest):
     """Iniciar sesión"""
     try:
-        # Buscar usuario por email
+        # Buscar usuario por username
         import sqlite3
         from backend.database import DB_PATH
         
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
-        row = conn.execute("SELECT * FROM users WHERE email = ?", (req.email,)).fetchone()
+        row = conn.execute("SELECT * FROM users WHERE username = ?", (req.username,)).fetchone()
         conn.close()
         
         if not row:
-            return AuthResponse(success=False, message="Email o contraseña incorrectos")
+            return AuthResponse(success=False, message="Usuario o contraseña incorrectos")
         
         user = dict(row)
         
         # Verificar contraseña
         if not verify_password(req.password, user["password_hash"]):
-            return AuthResponse(success=False, message="Email o contraseña incorrectos")
+            return AuthResponse(success=False, message="Usuario o contraseña incorrectos")
         
         # Generar token
         token = generate_token()
