@@ -1,30 +1,33 @@
 /**
- * El Crack Quiz - Configuración de la Aplicación
+ * FutQuiz - Configuración de la Aplicación
  *
- * Para desarrollo local:  API_URL apunta a localhost
- * Para producción (Facebook Games): cambia API_URL al dominio de Railway/Render
+ * ✅ RENDER: El backend sirve el frontend directamente,
+ *    así que la API URL es siempre relativa (/api).
+ *    No hace falta cambiar nada al desplegar en Render.
  *
- * INSTRUCCIONES:
- * 1. Despliega el backend en Railway: https://railway.app
- * 2. Copia la URL que te da Railway (ej: https://futquiz-backend.railway.app)
- * 3. Reemplaza la línea PRODUCTION_API_URL con esa URL
- * 4. Cambia IS_PRODUCTION = true antes de subir a Facebook
+ * Para Facebook Bundle (archivo .zip):
+ *    Cambia PRODUCTION_API_URL a tu URL de Render.
  */
 
 (function() {
-    const IS_PRODUCTION = false; // <-- Cambiar a true antes de subir a Facebook
+    // true  → usa PRODUCTION_API_URL (para el bundle de Facebook)
+    // false → usa /api relativo (perfecto para Render y desarrollo)
+    const IS_PRODUCTION = false;
 
-    const PRODUCTION_API_URL = 'https://TU-BACKEND.railway.app/api'; // <-- Tu URL de Railway aquí
-    const LOCAL_API_URL      = window.location.protocol === 'file:'
+    // Solo necesaria para el bundle de Facebook (archivo zip independiente)
+    // Cámbiala por tu URL de Render cuando la tengas:
+    // ej: 'https://futquiz.onrender.com/api'
+    const PRODUCTION_API_URL = 'https://futquiz.onrender.com/api';
+
+    const LOCAL_API_URL = window.location.protocol === 'file:'
         ? 'http://127.0.0.1:8000/api'
         : '/api';
 
     window.GAME_CONFIG = {
-        apiUrl:        IS_PRODUCTION ? PRODUCTION_API_URL : LOCAL_API_URL,
-        isProduction:  IS_PRODUCTION,
-        version:       '1.0.0',
-        gameName:      'El Crack Quiz',
-        // Facebook App ID (obtenlo en developers.facebook.com)
-        fbAppId:       '',
+        apiUrl:       IS_PRODUCTION ? PRODUCTION_API_URL : LOCAL_API_URL,
+        isProduction: IS_PRODUCTION,
+        version:      '1.0.0',
+        gameName:     'FutQuiz',
+        fbAppId:      '757919567386850',
     };
 })();
