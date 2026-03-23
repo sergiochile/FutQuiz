@@ -1,18 +1,17 @@
 /**
  * FutQuiz - Configuración de la Aplicación
  *
- * En Render: el backend sirve el frontend directamente,
- * la API URL es siempre relativa (/api). No hay que cambiar nada.
+ * Frontend en Netlify + Backend en Render.
+ * En local apunta a localhost, en producción a la URL de Render.
  */
 
 (function() {
-    // Detecta automáticamente si es Render/producción o local
     const isLocal = window.location.hostname === 'localhost'
                  || window.location.hostname === '127.0.0.1'
                  || window.location.protocol === 'file:';
 
     const LOCAL_API_URL      = 'http://127.0.0.1:8000/api';
-    const PRODUCTION_API_URL = '/api';  // Relativo — funciona en Render automáticamente
+    const PRODUCTION_API_URL = 'https://futquiz.onrender.com/api';
 
     window.GAME_CONFIG = {
         apiUrl:       isLocal ? LOCAL_API_URL : PRODUCTION_API_URL,
